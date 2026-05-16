@@ -67,9 +67,15 @@ foreach ($User in $Roster) {
     }
 }
 ```
+![PowerShell Provisioning Outputs](01_powershell_user_provisioning.png)
+![On-Premises AD Scoped OU Contents](02_active_directory_sync_ou.png)
+![AD Domains and Trusts Alternative UPN Configuration](03_alternative_upn_suffix.png)
+
 
 ## Phase 2: Scoped Directory Synchronization (Data Minimization)
 Rather than executing a standard "Express" configuration—which risks exporting unroutable service accounts, local computer discovery logs, and default administrative paths to the public cloud—a **Custom Installation** of Microsoft Entra Connect was engineered.
+![Scoped OU Filtering Configuration](04_entra_connect_ou_filtering.png)
+![Optional Features Writeback Configuration](05_entra_connect_password_writeback.png)
 
 ### Security Baseline Configuration:
 1. **Authentication Engine:** Password Hash Synchronization (PHS) enabled to safely process cryptographic password representations.
@@ -85,7 +91,7 @@ Following the completion of the synchronization engine configuration, a comprehe
 
 All six specialized on-premises identities successfully registered in the cloud tenant with a directory authorization state of `On-premises sync enabled: Yes`.
 
-![Entra ID User Cloud State](06_entra_cloud_sync_verification.png)
+![Entra ID User Cloud State](06_entra_cloud_user_verification.png)
 
 ### Hybrid Access Modification (Mover Scenario)
 To simulate an active access modification ticket (the "Mover" phase of JML lifecycle management), an on-premises security group was engineered via administrative shell tools, and an identity was nested inside. 
