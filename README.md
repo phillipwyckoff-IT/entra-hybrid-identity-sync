@@ -160,7 +160,7 @@ provider "azuread" {
 ```
 ### 2. Core Zero-Trust Boundary Matrix (main.tf)
 Defines environment variables, resolves dynamic object identities, and declares two distinct conditional access restrictions.
-```
+```hcl
 # Global Tenant Context Variables
 variable "tenant_domain" {
   type        = string
