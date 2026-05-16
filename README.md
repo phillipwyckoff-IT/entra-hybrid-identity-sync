@@ -114,3 +114,14 @@ Add-ADGroupMember -Identity "SG-SecurityOperations-Cloud" -Members "erostova"
 # 3. Administrative Power-Move: Force immediate delta synchronization replication
 Start-ADSyncSyncCycle -PolicyType Delta
 ```
+
+## Bonus
+### Advanced Lifecycle Testing: Bulk Account Suspension (SecOps Scenario)
+To simulate an immediate incident response or bulk offboarding event, a secondary script was executed to instantly disable all six targeted identities at the directory level.
+
+#### Suspension Script Execution:
+![PowerShell Account Suspension Run](02a_powershell_account_suspension.png)
+
+#### Target Directory Suspended State:
+The downward arrows on the user objects visually confirm that the accounts are explicitly disabled across the domain:
+![Active Directory Disabled State](02b_active_directory_disabled_users.png)
