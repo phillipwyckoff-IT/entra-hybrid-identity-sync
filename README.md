@@ -74,7 +74,7 @@ foreach ($User in $Roster) {
 
 ## Phase 2: Scoped Directory Synchronization (Data Minimization)
 Rather than executing a standard "Express" configuration—which risks exporting unroutable service accounts, local computer discovery logs, and default administrative paths to the public cloud—a **Custom Installation** of Microsoft Entra Connect was engineered.
-(04_entra_connect_ou_filtering.png)
+![Scoped OU Filtering Configuration](04_entra_connect_ou_filtering.png)
 ![Optional Features Writeback Configuration](05_entra_connect_password_writeback.png)
 
 ### Security Baseline Configuration:
