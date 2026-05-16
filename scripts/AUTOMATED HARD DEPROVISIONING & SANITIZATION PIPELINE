@@ -1,0 +1,26 @@
+# ==============================================================================
+# PHASE 3: AUTOMATED HARD DEPROVISIONING & SANITIZATION PIPELINE
+# ==============================================================================
+Import-Module ActiveDirectory
+
+# 1. TARGET USER MATRIX
+$TargetUsers = @("mvance", "erostova", "dkim", "alexadmin", "vsupport", "breakglass01")
+
+# 2. EXECUTION PURGE ENGINE (Users)
+foreach ($SamName in $TargetUsers) {
+    if (Get-ADUser -Filter "SamAccountName -eq '$SamName'") {
+        Remove-ADUser -Identity $SamName -Confirm:$false
+        Write-Host "Local Directory: Purged identity $SamName from database" -ForegroundColor Red
+    }
+}
+
+# 3. EXECUTION PURGE ENGINE (Groups)
+if (Get-ADGroup -Filter "Name -eq 'SG-SecurityOperations-Cloud'") {
+    Remove-ADGroup -Identity "SG-SecurityOperations-Cloud" -Confirm:$false
+    Write-Host "Local Directory: Purged hybrid security group." -ForegroundColor Red
+}
+
+# 4. AUTOMATED PIPELINE REPLICATION
+Write-Host "Triggering Entra Connect Synchronization Engine..." -ForegroundColor Cyan
+Start-ADSyncSyncCycle -PolicyType Delta
+Write-Host "Pipeline Success: Infrastructure sanitized locally and unlinked cloud objects dropped!" -ForegroundColor Green
