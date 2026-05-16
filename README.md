@@ -160,6 +160,7 @@ provider "azuread" {
 ```
 ### 2. Core Zero-Trust Boundary Matrix (main.tf)
 Defines environment variables, resolves dynamic object identities, and declares two distinct conditional access restrictions.
+```
 # Global Tenant Context Variables
 variable "tenant_domain" {
   type        = string
@@ -221,6 +222,7 @@ resource "azuread_conditional_access_policy" "vendor_security_gate" {
     built_in_controls = ["mfa"]
   }
 }
+```
 
 Continuous Deployment Pipeline Workflow
 Execution and enforcement were carried out inside a standard Infrastructure-as-Code pipeline via PowerShell:
@@ -282,7 +284,7 @@ SigninLogs
 ## Phase 5: Programmatic Directory Governance & Compliance Auditing
 **Objective:** Engineer an automated compliance auditing utility using the modern Microsoft Graph API ecosystem to programmatically detect directory risk vectors, orphaned privileges, and external identity anomalies.
 
-### 📊 Governance Strategy & Design Choices
+## 📊 Governance Strategy & Design Choices
 In large-scale enterprise environments (particularly within regulated financial frameworks), manual portal inspections fail to meet continuous audit standards. This phase implements a scalable **Compliance-as-Code** reporting mechanism using a custom PowerShell pipeline designed around the modern **Microsoft Graph API core schema**.
 
 The auditing logic intentionally bypasses legacy modules to target active Graph endpoints directly, evaluating all synchronized directory personas against three core enterprise compliance rules:
@@ -295,7 +297,7 @@ The auditing logic intentionally bypasses legacy modules to target active Graph 
 
 ---
 
-## Phase 4: Least-Privilege Enforcement via Privileged Identity Management (PIM)
+## Phase 6: Least-Privilege Enforcement via Privileged Identity Management (PIM)
 **Objective:** Eliminate permanent standing administrative privileges within the cloud tenant by architecting a Just-In-Time (JIT) role elevation matrix to mitigate lateral movement risks and fulfill strict enterprise compliance frameworks (SOX/FINRA).
 
 ### 🔒 The Problem: Standing Privileges as an Attack Vector
