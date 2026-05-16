@@ -1,0 +1,32 @@
+# ==============================================================================
+# LAB SETUP: CREATE SYNC_USERS ORGANIZATIONAL UNIT (OU)
+# ==============================================================================
+Import-Module ActiveDirectory
+
+# 1. Define the name and target root path of your domain
+$OUName = "Sync_Users"
+$DomainPath = "DC=sc300lab,DC=com" # Enforce root domain path
+
+# 2. Check if the OU already exists to ensure script idempotency
+$FullOUPath = "OU=$OUName,$DomainPath"
+
+if (-not (Get-ADOrganizationalUnit -Identity $FullOUPath -ErrorAction SilentlyContinue)) {
+    
+    # 3. Create the OU with accidental deletion protection turned OFF for easy lab resetting
+    New-ADOrganizationalUnit -Name $OUName `
+                             -Path $DomainPath `
+                             -ProtectedFromAccidentalDeletion $false
+                             
+    Write-Host "Success: Created Organizational Unit '$OUName' at $FullOUPath" -ForegroundColor Green
+} else {
+    Write-Host "Notice: The OU '$OUName' already exists at $FullOUPath. Skipping creation." -ForegroundColor Yellow
+}
+
+
+
+
+
+
+
+# You can check if the OU was setup correctly by running the below script
+Get-ADOrganizationalUnit -Identity "OU=Sync_Users,DC=sc300lab,DC=com"
