@@ -217,6 +217,7 @@ Use Terraform to create and manage basic Microsoft Entra ID Conditional Access p
 - Applied configuration using Terraform CLI commands
 
 ![terraform apply success](03a_terraform_apply_success.png)
+![entra conditional acces](03b_entra_conditional_access.png)
 ---
 
 ## Terraform Configuration
