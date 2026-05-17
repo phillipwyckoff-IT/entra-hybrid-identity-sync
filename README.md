@@ -1,5 +1,31 @@
 # Enterprise Hybrid Identity Lifecycle & Directory Synchronization Lab
+Import-Module ActiveDirectory
 
+# Users to offboard (Leaver simulation)
+$Users = @("alexadmin", "dkim", "erostova")
+
+# Target OU for disabled accounts
+$DisabledOU = "OU=Disabled_Users,DC=sc300lab,DC=com"
+
+foreach ($Username in $Users) {
+
+    # Get user object
+    $user = Get-ADUser -Identity $Username -ErrorAction SilentlyContinue
+
+    if ($user) {
+
+        # Step 1: Disable the account
+        Disable-ADAccount -Identity $Username
+        Write-Host "Disabled account: $Username"
+
+        # Step 2: Move to Disabled Users OU
+        Move-ADObject -Identity $user.DistinguishedName -TargetPath $DisabledOU
+        Write-Host "Moved to Disabled_Users OU: $Username"
+
+    } else {
+        Write-Host "User not found: $Username"
+    }
+}
 ## Project Overview
 This project demonstrates the implementation of a production-grade hybrid identity architecture, bridging an on-premises Active Directory Domain Services (AD DS) infrastructure with a Microsoft 365 / Microsoft Entra ID cloud tenant. 
 
