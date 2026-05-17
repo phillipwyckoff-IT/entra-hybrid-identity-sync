@@ -145,7 +145,7 @@ Validate how user lifecycle changes in Active Directory (joiner, mover, leaver s
 - Confirmed accounts showed as “On-premises sync enabled”
 - Validated identity visibility in the cloud tenant
 
-![Entra ID User Cloud State](06_entra_cloud_user_verification.png)
+![Entra ID User Cloud State](06_entra_cloud_sync_verification.png)
 
 ---
 
