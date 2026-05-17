@@ -1,55 +1,57 @@
-# Enterprise Hybrid Identity Lifecycle & Directory Synchronization Lab
-Import-Module ActiveDirectory
+# Hybrid Identity & IAM Home Lab
 
-# Users to offboard (Leaver simulation)
-$Users = @("alexadmin", "dkim", "erostova")
+## Overview
+This project documents a hands-on IAM lab environment I built while transitioning from IT support into Identity and Access Management (IAM).
 
-# Target OU for disabled accounts
-$DisabledOU = "OU=Disabled_Users,DC=sc300lab,DC=com"
+The goal of the lab was to gain practical experience with:
+- Microsoft Entra ID
+- Hybrid Active Directory synchronization
+- PowerShell automation
+- Conditional Access
+- RBAC and Privileged Identity Management (PIM)
+- SAML federation
+- Microsoft Graph API
 
-foreach ($Username in $Users) {
+The lab environment includes:
+- Windows Server 2022 Domain Controller
+- On-premises Active Directory (`sc300lab.com`)
+- Microsoft Entra ID tenant
+- Microsoft Entra Connect synchronization
 
-    # Get user object
-    $user = Get-ADUser -Identity $Username -ErrorAction SilentlyContinue
-
-    if ($user) {
-
-        # Step 1: Disable the account
-        Disable-ADAccount -Identity $Username
-        Write-Host "Disabled account: $Username"
-
-        # Step 2: Move to Disabled Users OU
-        Move-ADObject -Identity $user.DistinguishedName -TargetPath $DisabledOU
-        Write-Host "Moved to Disabled_Users OU: $Username"
-
-    } else {
-        Write-Host "User not found: $Username"
-    }
-}
-# Step 3: Force Entra Connect sync (Delta Sync)
-Write-Host "Triggering Azure AD Connect sync..." -ForegroundColor Cyan
-Start-ADSyncSyncCycle -PolicyType Delta
-
-Write-Host "Sync complete."
-## Project Overview
-This project demonstrates the implementation of a production-grade hybrid identity architecture, bridging an on-premises Active Directory Domain Services (AD DS) infrastructure with a Microsoft 365 / Microsoft Entra ID cloud tenant. 
-
-Designed to mirror strict corporate security baselines, this architecture enforces data minimization via scoped Organizational Unit (OU) filtering, utilizes automated lifecycle scripting, and implements bidirectional password mechanics via Password Hash Synchronization (PHS) and Password Writeback.
-
-## Architectural Design
-The architecture establishes a secure synchronization pipeline between a local Windows Server 2022 Domain Controller and Microsoft Entra ID via the Microsoft Entra Connect engine.
-
-* **Source of Truth:** On-Premises Active Directory (`sc300lab.com`)
-* **Target Directory:** Microsoft Entra ID Tenant
-* **Identity Provisioning:** Automated via Parameterized PowerShell
-* **Synchronization Scope:** Restricted exclusively to an isolated Security/Sync OU
+I used this environment to practice common IAM tasks such as user provisioning, group management, hybrid identity synchronization, MFA enforcement, and access governance.
 
 ---
 
-## Phase 1: Automated On-Premises "Joiner" Provisioning
-To align with corporate identity standards and eliminate manual administrative overhead, a parameterized PowerShell script was developed to handle the bulk ingestion of standard and specialized organizational personas into a dedicated `Sync_Users` OU.
+# Phase 1: Automated User Provisioning in Active Directory
 
-The script dynamically appends the alternative routable User Principal Name (UPN) suffix to ensure zero mapping collisions upon cloud ingestion, and checks for account existence to guarantee script idempotency.
+## Objective
+Create and manage test user accounts in Active Directory using PowerShell instead of manual account creation.
+
+## What I Implemented
+- Created a dedicated `Sync_Users` OU for synchronized identities
+- Built a PowerShell script to automate user creation
+- Configured alternative UPN suffixes for Entra ID synchronization
+- Added basic duplicate-account checking before user creation
+- Created multiple user types including:
+  - standard users
+  - admin account
+  - vendor account
+  - break-glass account
+
+## Screenshots
+![PowerShell Provisioning Outputs](01_powershell_user_provisioning.png)
+
+![On-Premises AD Scoped OU Contents](02_active_directory_sync_ou.png)
+
+![AD Domains and Trusts Alternative UPN Configuration](03_alternative_upn_suffix.png)
+
+## What I Learned
+- Basic Active Directory user provisioning with PowerShell
+- How UPN suffixes affect Entra ID synchronization
+- The importance of OU structure in hybrid environments
+- How automation can reduce repetitive administrative tasks
+<details>
+<summary>View PowerShell Script</summary>
 
 ```powershell
 # 1. Load the Active Directory modules so PowerShell understands AD commands
@@ -97,25 +99,37 @@ foreach ($User in $Roster) {
         Write-Host "Account identity $($User.SamName) already exists. Skipping creation." -ForegroundColor Yellow
     }
 }
+<details>
 ```
-![PowerShell Provisioning Outputs](01_powershell_user_provisioning.png)
-![On-Premises AD Scoped OU Contents](02_active_directory_sync_ou.png)
-![AD Domains and Trusts Alternative UPN Configuration](03_alternative_upn_suffix.png)
+# Phase 2: Scoped Directory Synchronization (Entra Connect)
 
+## Objective
+Configure Microsoft Entra Connect to sync only selected users from on-premises Active Directory to Microsoft Entra ID.
 
-## Phase 2: Scoped Directory Synchronization (Data Minimization)
-Rather than executing a standard "Express" configuration—which risks exporting unroutable service accounts, local computer discovery logs, and default administrative paths to the public cloud—a **Custom Installation** of Microsoft Entra Connect was engineered.
+## What I Implemented
+- Installed and configured Microsoft Entra Connect using a custom setup (not express settings)
+- Scoped synchronization to only the `Sync_Users` OU
+- Enabled Password Hash Synchronization (PHS) for cloud authentication
+- Enabled Password Writeback to support self-service password reset (SSPR)
+- Prevented full-domain sync to avoid syncing unnecessary or test objects
+
+## Why This Matters
+In a real environment, limiting synchronization scope helps reduce risk by ensuring only intended user accounts are synced to the cloud.
+
+## Screenshots
 ![Scoped OU Filtering Configuration](04_entra_connect_ou_filtering.png)
-![Optional Features Writeback Configuration](05_entra_connect_password_writeback.png)
 
-### Security Baseline Configuration:
-1. **Authentication Engine:** Password Hash Synchronization (PHS) enabled to safely process cryptographic password representations.
-2. **Scoped OU Filtering:** Disabled root domain broad-sync. Configured the engine to strictly evaluate and synchronize the `Sync_Users` OU folder only.
-3. **Bidirectional Password Lifecycle:** Enabled **Password Writeback** to support Self-Service Password Reset (SSPR) and maintain password parity between the cloud and the secure local perimeter.
+![Password Writeback Configuration](05_entra_connect_password_writeback.png)
 
-### Verification: Scoped Sync Pipeline Configuration
-![Scoped OU Filtering Configuration](04_scoped_ou_filtering.png)
-![Optional Features Writeback Configuration](05_optional_features_writeback.png)
+![Scoped OU Filtering Verification](04_scoped_ou_filtering.png)
+
+![Optional Features Writeback Verification](05_optional_features_writeback.png)
+
+## What I Learned
+- How Entra Connect controls identity synchronization between on-prem and cloud
+- The difference between Password Hash Sync and Password Writeback
+- Why OU filtering is important in hybrid identity environments
+- How configuration choices directly affect what identities appear in Microsoft Entra ID
 
 ## Phase 3: Cloud Ingestion & Identity Governance Verification
 Following the completion of the synchronization engine configuration, a comprehensive cloud audit was performed within the Microsoft Entra Admin Center portal. 
