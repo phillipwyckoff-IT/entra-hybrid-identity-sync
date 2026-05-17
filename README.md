@@ -99,7 +99,7 @@ foreach ($User in $Roster) {
         Write-Host "Account identity $($User.SamName) already exists. Skipping creation." -ForegroundColor Yellow
     }
 }
-<details>
+</details>
 ```
 # Phase 2: Scoped Directory Synchronization (Entra Connect)
 
