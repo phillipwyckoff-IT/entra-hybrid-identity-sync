@@ -148,10 +148,6 @@ foreach ($User in $Roster) {
 
 ---
 
-## Outcome
-
-This phase establishes the identity foundation required for hybrid identity integration in later phases, ensuring all identities are structured, consistent, and ready for synchronization to Microsoft Entra ID.
-
 # Phase 2: Hybrid Identity Synchronization (Entra Connect)
 
 ## Objective
@@ -211,12 +207,6 @@ Start-ADSyncSyncCycle -PolicyType Delta
 - Password Hash Synchronization (PHS)
 - Password Writeback for identity recovery scenarios
 - Identity lifecycle preparation for cloud integration
-
----
-
-## Outcome
-
-This phase establishes the hybrid identity bridge between on-prem Active Directory and Microsoft Entra ID, enabling centralized identity management and preparing the environment for lifecycle and access control scenarios in later phases.
 
 ---
 
@@ -331,11 +321,6 @@ Start-ADSyncSyncCycle -PolicyType Delta
 
 ---
 
-## Outcome
-
-This phase demonstrates how identity changes are managed over time in a hybrid IAM environment. It validates that user onboarding, role changes, and offboarding actions are consistently reflected between Active Directory and Microsoft Entra ID.
-
----
 # Phase 4: Access Governance (Conditional Access with Terraform)
 
 ## Objective
@@ -460,11 +445,6 @@ resource "azuread_conditional_access_policy" "vendor_restriction" {
 - Identity-based security enforcement
 - Infrastructure-as-Code for IAM governance
 
----
-
-## Outcome
-
-This phase demonstrates how IAM governance policies can be automated and consistently deployed using Terraform, improving scalability, repeatability, and security posture across identity systems.
 
 ---
 
@@ -569,8 +549,3 @@ Get-MgUser -UserId "alexadmin@yourtenant.onmicrosoft.com"
 
 ---
 
-## Outcome
-
-This phase demonstrates how authentication, federation, and monitoring work together in a modern IAM environment.
-
-It validates that users can securely access SaaS applications through centralized identity management, while IAM teams maintain visibility into authentication activity and system behavior.
