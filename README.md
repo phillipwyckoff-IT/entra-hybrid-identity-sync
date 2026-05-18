@@ -5,20 +5,28 @@ This lab demonstrates an end-to-end IAM lifecycle from identity creation through
 ## Overview
 This project documents a hands-on IAM lab environment I built while transitioning from IT support into Identity and Access Management (IAM).
 
-The goal of the lab was to gain practical experience with:
+ ## Skills Demonstrated
+
+- Active Directory Administration
 - Microsoft Entra ID
-- Hybrid Active Directory synchronization
-- PowerShell automation
+- Microsoft Entra Connect
+- PowerShell Automation
 - Conditional Access
-- RBAC and Privileged Identity Management (PIM)
-- SAML federation
+- Hybrid Identity Synchronization
+- SAML 2.0 Federation
 - Microsoft Graph API
+- Terraform
+- Identity Lifecycle Management (JML)
+- RBAC
+- MFA Enforcement
 
 The lab environment includes:
 - Windows Server 2022 Domain Controller
 - On-premises Active Directory (`sc300lab.com`)
 - Microsoft Entra ID tenant
 - Microsoft Entra Connect synchronization
+
+ 
 
 I used this environment to practice common IAM tasks such as user provisioning, group management, hybrid identity synchronization, MFA enforcement, and access governance.
 
@@ -133,7 +141,7 @@ foreach ($User in $Roster) {
 ## Key Concepts Demonstrated
 
 - Active Directory identity provisioning
-- Identity architecture design (OU structure)
+- OU structure for hybrid synchronization
 - User Principal Name (UPN) planning for hybrid identity
 - PowerShell automation for IAM workflows
 - Identity validation and readiness for synchronization
@@ -187,7 +195,7 @@ Key IAM concepts demonstrated:
 
 ---
 
-## Implimination details
+## Implementation details
 
 # Forces a delta synchronization between on-prem AD and Entra ID
 
@@ -460,7 +468,7 @@ This phase demonstrates how IAM governance policies can be automated and consist
 
 ---
 
-# Phase 5: Authentication, Federation & Monitoring
+# Phase 5: Federation, Authentication & Monitoring
 
 ## Objective
 
