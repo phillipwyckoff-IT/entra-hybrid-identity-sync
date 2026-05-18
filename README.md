@@ -429,23 +429,25 @@ User → AD Group → Entra ID → SAML Authentication → GitHub Enterprise Acc
 
 ## Screenshots / Evidence
 
-### 1. Enterprise App Assignment (Group-Based Access)
-![Group Assignment](./screenshots/phase7/entra-github-group-assignment.png)
+### 1. Entra ID Sign-In Logs (Authentication Validation)
+![Sign-In Logs](Entra-Audit-Log-History.png)
+
 
 ---
 
-### 2. Successful SAML SSO Login
-![SAML Login Success](./screenshots/phase7/github-saml-login-success.png)
+### 2. Detailed Authentication Event Trace
+![Auth Details](Entra-Sign-In-Success-Details.png)
+
 
 ---
 
-### 3. Entra ID Sign-In Logs (Authentication Validation)
-![Sign-In Logs](./screenshots/phase7/entra-signin-logs-success.png)
+### 3. Enterprise App Assignment (Group-Based Access)
+![Group Assignment](lab1-02-entra-group-membership-sync.png)
 
 ---
 
-### 4. Detailed Authentication Event Trace
-![Auth Details](./screenshots/phase7/entra-authentication-details.png)
+### 4. Successful SAML SSO Login
+![SAML Login Success](lab1-03-github-saml-sso-success.png)
 
 ---
 
