@@ -218,7 +218,8 @@ Use Terraform to create and manage basic Microsoft Entra ID Conditional Access p
 ---
 
 ## Terraform Configuration
-
+<details>
+<summary>Terraform Script</summary>
 ### Provider Setup
 ```hcl
 terraform {
@@ -286,16 +287,18 @@ resource "azuread_conditional_access_policy" "vendor_restriction" {
     built_in_controls = ["mfa"]
   }
 }
+</details>
 ```
 
 ---
 
 ## Deployment Steps
-
+<details>
+<summary>Terraform Script</summary>
 - `terraform init` – initialize provider plugins  
 - `terraform plan` – review planned changes  
 - `terraform apply -auto-approve` – apply configuration  
-
+</details>details>
 ---
 
 ## Issue Encountered & Fix
