@@ -362,92 +362,33 @@ Break-glass accounts are highly privileged emergency accounts that are excluded 
 - How break-glass accounts are used in enterprise IAM environments
 - Basic log filtering and audit visibility concepts
 
-# Phase 6: Basic Compliance Reporting with Microsoft Graph
+# Phase 6: Microsoft Graph Exploration
 
 ## Objective
-Use Microsoft Graph API with PowerShell to retrieve and review Microsoft Entra ID user data for basic compliance visibility and reporting.
+Explore how Microsoft Graph API can be used with PowerShell to retrieve Microsoft Entra ID user information.
 
 ---
 
-## What I Implemented
-- Connected to Microsoft Graph using PowerShell (via `az rest`)
-- Queried Entra ID user objects from the directory
-- Parsed JSON responses into PowerShell objects
-- Reviewed identity attributes for basic compliance-style reporting
-- Built simple logic to flag specific identity types (break-glass and vendor accounts)
+## What I Worked On
+- Installed and tested Microsoft Graph PowerShell modules
+- Connected to Microsoft Graph using PowerShell authentication
+- Practiced querying Entra ID user information
+- Explored how IAM teams can use Graph for reporting and automation
 
 ---
 
-## Microsoft Graph Query Script
-<details>
-<summary>View Micrososoft Graph Script</summary>
-
-  
-```powershell
-# Query Microsoft Graph for Entra ID users
-Write-Host "Querying Microsoft Graph for user data..." -ForegroundColor Cyan
-
-$RawResponse = az rest --method get --url "https://graph.microsoft.com/v1.0/users?`$select=displayName,userPrincipalName,id,assignedLicenses"
-
-# Convert JSON response into PowerShell object
-$GraphData = ConvertFrom-Json $RawResponse
-$TenantUsers = $GraphData.value
-
-Write-Host "`n=== BASIC IAM COMPLIANCE REPORT ===" -ForegroundColor Yellow
-Write-Host "-----------------------------------"
-
-foreach ($User in $TenantUsers) {
-
-    $Status = "COMPLIANT"
-    $Notes = ""
-
-    # Basic rule: check break-glass accounts
-    if ($User.userPrincipalName -like "*breakglass*" -and 
-        ($User.assignedLicenses.Count -eq 0 -or $User.assignedLicenses -eq $null)) {
-        $Status = "REVIEW REQUIRED"
-        $Notes = "Break-glass account missing expected license assignment"
-    }
-
-    # Basic rule: check vendor accounts
-    elseif ($User.userPrincipalName -like "*vsupport*") {
-        $Status = "REVIEW REQUIRED"
-        $Notes = "Vendor account requires periodic access review"
-    }
-
-    [PSCustomObject]@{
-        Name      = $User.displayName
-        UPN       = $User.userPrincipalName
-        Status    = $Status
-        Notes     = $Notes
-    } | Format-List
-}
-```
-</details>
-
-
-
----
-
-## What This Demonstrates
-- Basic use of Microsoft Graph API for identity data retrieval
-- How IAM teams can programmatically review directory users
-- Early-stage compliance-style logic using PowerShell
-- Understanding of break-glass and vendor identity types
-
----
-
-## Challenges
-- Required working through Microsoft Graph authentication via Azure CLI
-- JSON response structure required parsing before use in PowerShell
-- Limited permissions affected some data visibility during testing
+## Areas Explored
+- `Connect-MgGraph`
+- `Get-MgUser`
+- Microsoft Graph permissions and authentication
+- PowerShell-based identity reporting
 
 ---
 
 ## What I Learned
-- How Microsoft Graph API exposes Entra ID directory data
-- How PowerShell can be used for identity reporting tasks
-- How IAM teams begin automating compliance checks
-- Importance of API permissions in identity management systems
+- Microsoft Graph requires proper authentication scopes and permissions
+- PowerShell can be used to automate identity reporting tasks
+- API authentication troubleshooting is an important part of IAM administration
 
 
 # Phase 7: SSO and Group-Based Access (SAML Federation)
