@@ -83,11 +83,11 @@ Key IAM principles demonstrated:
 
 ## Screenshots (Proof of Work)
 
-![PowerShell Provisioning Output](01_powershell_user_provisioning.png)
+![PowerShell Provisioning Output](Screenshot/01_powershell_user_provisioning.png)
 
-![Active Directory Sync OU Structure](02_active_directory_sync_ou.png)
+![Active Directory Sync OU Structure](Screenshot/02_active_directory_sync_ou.png)
 
-![UPN Suffix Configuration](03_alternative_upn_suffix.png)
+![UPN Suffix Configuration](Screenshot/03_alternative_upn_suffix.png)
 
 ---
 
